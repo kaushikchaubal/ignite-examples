@@ -1,4 +1,4 @@
-package com.bfm.app.ignite.geekweekly;
+package com.ignite.examples;
 
 import java.io.Serializable;
 import java.util.Collections;
