@@ -1,4 +1,4 @@
-package com.ignite.examples;
+package com.bfm.app.ignite.meetup;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
@@ -15,27 +15,49 @@ public class HelloWorldCache {
 	@Test
 	public void helloWorldCache() {
 
-	    Ignition.setClientMode(true);
 	    try (Ignite ignite = Ignition.start()) {
-			
+
             // Create a cache
-	        CacheConfiguration<String, String> config = new CacheConfiguration<String, String>("cache");
-	        config.setAtomicityMode(CacheAtomicityMode.TRANSACTIONAL);
-	        IgniteCache<String, String> cache = ignite.getOrCreateCache(config);
-	        
+	    	IgniteCache<String, String> cache = ignite.getOrCreateCache("cache");
+
             // Put cache entry
-	        String key = "key";
-	        cache.put(key, "Hello");
-	        
+	    	String key = "key";
+	    	String val = "Hello";
+	    	cache.put(key, val);
+
 	        // Modify cache entry
-	        try (Transaction tx = ignite.transactions().txStart()) {
-    	        String val = cache.get(key);
-    	        cache.put(key, val + " World");
-    	        tx.commit();
-	        }
-	        
+    		cache.put(key, cache.get(key) + " World");
+
             // Read cache entry
-            System.out.println(cache.get(key));
+	    	System.out.println(cache.get(key));
+		}
+	}
+
+
+
+	@Test
+	public void cacheTransaction() {
+
+	    try (Ignite ignite = Ignition.start()) {
+
+            // Create a cache
+	    	CacheConfiguration<String, String> config = new CacheConfiguration<>("cachetx");
+	    	config.setAtomicityMode(CacheAtomicityMode.TRANSACTIONAL);
+	    	IgniteCache<String, String> cache = ignite.getOrCreateCache(config);
+
+            // Put cache entry
+	    	String key = "key";
+	    	String val = "Hello";
+	    	cache.put(key, val);
+
+	        // Modify cache entry
+	    	try (Transaction tx = ignite.transactions().txStart()) {
+	    		cache.put(key, cache.get(key) + " World");
+				tx.commit();
+	    	}
+
+            // Read cache entry
+	    	System.out.println(cache.get(key));
 		}
 	}
 }
