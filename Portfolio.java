@@ -1,21 +1,20 @@
-package com.ignite.examples;
+package com.bfm.app.ignite.meetup;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 import org.apache.ignite.cache.query.annotations.QueryTextField;
 
-public class Portfolio implements Serializable {
-    
+public class Portfolio {
+
     @QuerySqlField(index = true)
     private final Long id;
 
     @QueryTextField
     @QuerySqlField(index = true)
     private final String name;
-    
+
     @QueryTextField
     private String description;
 
@@ -64,7 +63,7 @@ public class Portfolio implements Serializable {
         this.nav = nav;
         this.positions = positions;
     }
-    
+
     public Portfolio(Long id, String name, String description) {
         this.id = id;
         this.name = name;
